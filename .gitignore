@@ -1,0 +1,22 @@
+# Advent of Code input files (contain sensitive data)
+input.txt
+**/input.txt
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Build outputs and binaries
+*.o
+*.exe
+*.class
+out/
+target/
+**/output/main
+
+# OS files
+.DS_Store
+Thumbs.db
