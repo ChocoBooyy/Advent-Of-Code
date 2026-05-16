@@ -1,16 +1,12 @@
-package Day05;
+package day05;
 
+import common.InputFiles;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class Solution {
-    private static List<String> getInput() throws IOException {
-        Path path = Paths.get("input.txt");
-        List<String> lines = Files.readAllLines(path);
-        return List.of(lines.toArray(new String[0]));
+    private static List<String> getInput(boolean example) throws IOException {
+        return InputFiles.readNonEmptyLines(Solution.class, example);
     }
 
     private static int part1(List<String> lines) {
@@ -37,7 +33,7 @@ public class Solution {
 
     public static void main(String[] args) {
         try {
-            List<String> input = getInput();
+            List<String> input = getInput(true);
             System.out.println("Input : \n" + input);
             int res1 = part1(input);
             int res2 = part2(input);

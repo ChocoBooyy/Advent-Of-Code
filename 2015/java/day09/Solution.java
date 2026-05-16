@@ -1,21 +1,17 @@
-package Day09;
+package day09;
 
+import common.InputFiles;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.*;
 
 public class Solution {
-    private static List<String> getInput() throws IOException {
-        Path path = Paths.get("input.txt");
-        List<String> lines = Files.readAllLines(path);
-        return List.of(lines.toArray(new String[0]));
+    private static List<String> getInput(boolean example) throws IOException {
+        return InputFiles.readNonEmptyLines(Solution.class, example);
     }
 
-    private static Map<String, City> getCityMap(List<String> lines) {
-        Map<String, City> cityMap = new HashMap<>();
+    private static Map<String, Map<String, Integer>> getCityMap(List<String> lines) {
+        Map<String, Map<String, Integer>> cityMap = new HashMap<>();
         Pattern pattern = Pattern.compile("([a-zA-Z]+)\\s+to\\s+([a-zA-Z]+)\\s*=\\s*(\\d+)");
 
         for (String line : lines) {
@@ -25,13 +21,8 @@ public class Solution {
                 String name2 = matcher.group(2);
                 int distance = Integer.parseInt(matcher.group(3));
 
-                // Create or get cities
-                City city1 = cityMap.computeIfAbsent(name1, City::new);
-                City city2 = cityMap.computeIfAbsent(name2, City::new);
-
-                // Add bidirectional connection
-                city1.addNeighbor(city2, distance);
-                city2.addNeighbor(city1, distance);
+                cityMap.computeIfAbsent(name1, k -> new HashMap<>()).put(name2, distance);
+                cityMap.computeIfAbsent(name2, k -> new HashMap<>()).put(name1, distance);
             }
         }
 
@@ -39,21 +30,21 @@ public class Solution {
     }
 
     private static Map<String, Integer> getAllRoutes(List<String> lines) {
-        Map<String, City> cityMap = getCityMap(lines);
+        Map<String, Map<String, Integer>> cityMap = getCityMap(lines);
 
-        List<City> cities = new ArrayList<>(cityMap.values());
-        List<List<City>> allRoutes = permutations(cities);
+        List<String> cities = new ArrayList<>(cityMap.keySet());
+        List<List<String>> allRoutes = permutations(cities);
 
         Map<String, Integer> routes = new LinkedHashMap<>(); // preserves insertion order
 
-        for (List<City> route : allRoutes) {
+        for (List<String> route : allRoutes) {
             int totalDistance = 0;
             boolean validRoute = true;
 
             for (int i = 0; i < route.size() - 1; i++) {
-                City current = route.get(i);
-                City next = route.get(i + 1);
-                Integer dist = current.neighbors.get(next);
+                String current = route.get(i);
+                String next = route.get(i + 1);
+                Integer dist = cityMap.getOrDefault(current, Map.of()).get(next);
 
                 if (dist == null) {
                     validRoute = false;
@@ -63,8 +54,7 @@ public class Solution {
             }
 
             if (validRoute) {
-                String path = String.join(" -> ",
-                        route.stream().map(c -> c.name).toList());
+                String path = String.join(" -> ", route);
                 routes.put(path, totalDistance);
             }
         }
@@ -127,7 +117,7 @@ public class Solution {
 
     public static void main(String[] args) {
         try {
-            List<String> input = getInput();
+            List<String> input = getInput(true);
             System.out.println("Input : \n" + input);
             int res1 = part1(input);
             int res2 = part2(input);

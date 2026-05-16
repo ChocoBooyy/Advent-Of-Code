@@ -1,14 +1,12 @@
-package Day01;
+package day01;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import common.InputFiles;
 import java.io.IOException;
+import java.util.List;
 
 public class Solution {
-    private static String getInput() throws IOException {
-        Path path = Paths.get("input.txt");
-        return Files.readString(path);
+    private static String getInput(boolean example) throws IOException {
+        return InputFiles.readString(Solution.class, example);
     }
 
     private static void part1(String input) {
@@ -40,7 +38,7 @@ public class Solution {
 
     public static void main(String[] args) {
         try {
-            String input = getInput();
+            String input = getInput(true);
             System.out.println("Input : \n" + input);
             part1(input);
             part2(input);

@@ -1,15 +1,12 @@
-package Day12;
+package day12;
 
+import common.InputFiles;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.regex.*;
 
 public class Solution {
-    private static String getInput() throws IOException {
-        Path path = Paths.get("input.txt");
-        return Files.readString(path);
+    private static String getInput(boolean example) throws IOException {
+        return InputFiles.readString(Solution.class, example);
     }
 
     private static int allSumNum(String input){
@@ -72,7 +69,7 @@ public class Solution {
 
     public static void main(String[] args) {
         try {
-            String input = getInput();
+            String input = getInput(true);
             System.out.println("Input : \n" + input);
             System.out.println("Part 1 : " + part1(input));
             System.out.println("Part 2 : " + part2(input));

@@ -1,18 +1,15 @@
-package Day04;
+package day04;
 
+import common.InputFiles;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SolutionMultithread {
 
-    private static String getInput() throws IOException {
-        Path path = Paths.get("input.txt");
-        return Files.readString(path).trim();
+    private static String getInput(boolean example) throws IOException {
+        return InputFiles.readString(SolutionMultithread.class, example).trim();
     }
 
     // Generic MD5 checker for a given number of leading zeros
@@ -91,7 +88,7 @@ public class SolutionMultithread {
 
     public static void main(String[] args) {
         try {
-            String input = getInput();
+            String input = getInput(true);
             System.out.println("Input : \n" + input);
 
             int res1 = part1(input);
